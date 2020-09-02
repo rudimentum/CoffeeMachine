@@ -1,14 +1,26 @@
 package machine;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class CoffeeMachine {
     public static void main(String[] args) {
+        int water = 200;
+        int milk = 50;
+        int beans = 15;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Write how many cups of coffee you will need:");
+        System.out.println("> ");
+        try {
+            Integer countofCups = Integer.parseInt(reader.readLine());
+            System.out.println("For " + countofCups + " cups of coffee you will need:");
+            System.out.println(water*countofCups + " ml of water");
+            System.out.println(milk*countofCups + " ml of milk");
+            System.out.println(beans*countofCups + " g of coffee beans");
 
-        System.out.println("Starting to make a coffee");
-        System.out.println("Grinding coffee beans");
-        System.out.println("Boiling water");
-        System.out.println("Mixing boiled water with crushed coffee beans");
-        System.out.println("Pouring coffee into the cup");
-        System.out.println("Pouring some milk into the cup");
-        System.out.println("Coffee is ready!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
