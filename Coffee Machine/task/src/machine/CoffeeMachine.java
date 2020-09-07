@@ -25,23 +25,13 @@ public class CoffeeMachine {
         int w = waterSupply / waterForCup;
         int m = milkSupply / milkForCup;
         int b = beansSupply / beansForCup;
-        // search minimum for correct count of cups machine can make
-        int min;
-        if (w<m) {
-            min = w < b ? w : b;
-        } else {
-            min = m < b ? m : b;
-        }
-        if (waterForCup * cups > waterSupply ||
-                milkForCup * cups > milkSupply ||
-                beansForCup * cups > beansSupply) {
+        // search minimum of cups machine can make
+        int min = Math.min(Math.min(w, m), b);
+
+        if (cups > min) {
             System.out.println("No, I can make only " + min + " cup(s) of coffee");
-        } else if (waterForCup * cups <= waterSupply &&
-                milkForCup * cups <= milkSupply &&
-                beansForCup * cups <= beansSupply) {
-            if (waterSupply / waterForCup * cups > cups &&
-                    milkSupply / milkForCup * cups > cups &&
-                    beansSupply / beansForCup * cups > cups) {
+        } else if (cups <= min) {
+            if (cups < min) {
                 System.out.println("Yes, I can make that amount of coffee (and even " + (min - cups) + " more than that)");
             } else {
                 System.out.println("Yes, I can make that amount of coffee");
