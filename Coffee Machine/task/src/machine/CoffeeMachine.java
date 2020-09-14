@@ -1,6 +1,5 @@
 package machine;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class CoffeeMachine {
@@ -10,11 +9,16 @@ public class CoffeeMachine {
     public static int currentCups = 9;
     public static int currentMoney = 550;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        supplies(0,0,0,0,0);
-        System.out.println("Write action (buy, fill, take):");
-        menu(scanner.nextLine());
+        while (true) {
+            System.out.println("Write action (buy, fill, take, remaining, exit):");
+            String line = scanner.nextLine();
+            if (line.equals("exit")) {
+                break;
+            }
+            menu(line);
+        }
     }
 
     public static void menu(String action) {
@@ -28,43 +32,77 @@ public class CoffeeMachine {
             case "take":
                 takeMoney();
                 break;
+            case "remaining":
+                printSupplies();
+                break;
         }
     }
 
-    public static void supplies(int water, int milk, int beans, int cups, int money) {
-        currentWater += water;
-        currentMilk += milk;
-        currentBeans += beans;
-        currentCups += cups;
-        currentMoney += money;
+    public static void printSupplies() {
         System.out.println("The coffee machine has:");
         System.out.println(currentWater + " of water");
         System.out.println(currentMilk + " of milk");
         System.out.println(currentBeans + " of coffee beans");
         System.out.println(currentCups + " of disposable cups");
-        System.out.println(currentMoney + " of money");
+        System.out.println("$" + currentMoney + " of money");
+    }
+
+    public static void changeSupplies(int water, int milk, int beans, int cups, int money) {
+        currentWater += water;
+        currentMilk += milk;
+        currentBeans += beans;
+        currentCups += cups;
+        currentMoney += money;
     }
 
     public static void buyCoffee() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
-        int coffee = scanner.nextInt();
-        switch (coffee) {
-            case 1:
-                supplies(-250, -0, -16, -1, 4);
+
+        int neededWater = 0;
+        int neededMilk = 0;
+        int neededBeans = 0;
+        int neededCup = 1;
+        int price = 0;
+        switch (scanner.next()) {
+            case "1":
+                neededWater = 250;
+                neededBeans = 16;
+                price = 4;
                 break;
-            case 2:
-                supplies(-350, -75, -20, -1, 7);
+            case "2":
+                neededWater = 350;
+                neededMilk = 75;
+                neededBeans = 20;
+                price = 7;
                 break;
-            case 3:
-                supplies(-200, -100, -12, -1, 6);
+            case "3":
+                neededWater = 200;
+                neededMilk = 100;
+                neededBeans = 12;
+                price = 6;
                 break;
+            case "back":
+                return;
+        }
+        if (currentWater >= neededWater &&
+                currentMilk >= neededMilk &&
+                currentBeans >= neededBeans) {
+            changeSupplies(-neededWater, -neededMilk, -neededBeans, -neededCup, price);
+        } else {
+            if (currentWater < neededBeans) {
+                System.out.println("Sorry, not enough water!");
+            } else if (currentMilk < neededMilk) {
+                System.out.println("Sorry, not enough milk!");
+            } else {
+                System.out.println("Sorry, not enough coffee beans!");
+            }
         }
     }
 
     public static void takeMoney() {
         System.out.println("I gave you $" + currentMoney);
-        supplies(0,0,0,0, -currentMoney);
+        changeSupplies(0,0,0,0, -currentMoney);
     }
 
     public static void fillSupplies() {
@@ -77,6 +115,6 @@ public class CoffeeMachine {
         int beans = scanner.nextInt();
         System.out.println("Write how many disposable cups of coffee do you want to add:");
         int cups = scanner.nextInt();
-        supplies(water, milk, beans, cups, 0);
+        changeSupplies(water, milk, beans, cups, 0);
     }
 }
