@@ -1,42 +1,82 @@
 package machine;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class CoffeeMachine {
+    public static int currentWater = 400;
+    public static int currentMilk = 540;
+    public static int currentBeans = 120;
+    public static int currentCups = 9;
+    public static int currentMoney = 550;
+
     public static void main(String[] args) throws IOException {
-        int waterForCup = 200;
-        int milkForCup = 50;
-        int beansForCup = 15;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Write how many ml of water the coffee machine has: ");
-        int waterSupply = Integer.parseInt(reader.readLine());
+        Scanner scanner = new Scanner(System.in);
+        supplies(0,0,0,0,0);
+        System.out.println("Write action (buy, fill, take):");
+        menu(scanner.nextLine());
+    }
 
-        System.out.println("Write how many ml of milk the coffee machine has: ");
-        int milkSupply = Integer.parseInt(reader.readLine());
-
-        System.out.println("Write how many grams of coffee beans the coffee machine has: ");
-        int beansSupply = Integer.parseInt(reader.readLine());
-
-        System.out.println("Write how many cups of coffee you will need: ");
-        int cups = Integer.parseInt(reader.readLine());
-        // how many cups machine can make now
-        int w = waterSupply / waterForCup;
-        int m = milkSupply / milkForCup;
-        int b = beansSupply / beansForCup;
-        // search minimum of cups machine can make
-        int min = Math.min(Math.min(w, m), b);
-
-        if (cups > min) {
-            System.out.println("No, I can make only " + min + " cup(s) of coffee");
-        } else if (cups <= min) {
-            if (cups < min) {
-                System.out.println("Yes, I can make that amount of coffee (and even " + (min - cups) + " more than that)");
-            } else {
-                System.out.println("Yes, I can make that amount of coffee");
-            }
+    public static void menu(String action) {
+        switch (action) {
+            case "buy":
+                buyCoffee();
+                break;
+            case "fill":
+                fillSupplies();
+                break;
+            case "take":
+                takeMoney();
+                break;
         }
+    }
 
+    public static void supplies(int water, int milk, int beans, int cups, int money) {
+        currentWater += water;
+        currentMilk += milk;
+        currentBeans += beans;
+        currentCups += cups;
+        currentMoney += money;
+        System.out.println("The coffee machine has:");
+        System.out.println(currentWater + " of water");
+        System.out.println(currentMilk + " of milk");
+        System.out.println(currentBeans + " of coffee beans");
+        System.out.println(currentCups + " of disposable cups");
+        System.out.println(currentMoney + " of money");
+    }
+
+    public static void buyCoffee() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
+        int coffee = scanner.nextInt();
+        switch (coffee) {
+            case 1:
+                supplies(-250, -0, -16, -1, 4);
+                break;
+            case 2:
+                supplies(-350, -75, -20, -1, 7);
+                break;
+            case 3:
+                supplies(-200, -100, -12, -1, 6);
+                break;
+        }
+    }
+
+    public static void takeMoney() {
+        System.out.println("I gave you $" + currentMoney);
+        supplies(0,0,0,0, -currentMoney);
+    }
+
+    public static void fillSupplies() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Write how many ml of water do you want to add:");
+        int water = scanner.nextInt();
+        System.out.println("Write how many ml of milk do you want to add:");
+        int milk = scanner.nextInt();
+        System.out.println("Write how many grams of coffee beans do you want to add:");
+        int beans = scanner.nextInt();
+        System.out.println("Write how many disposable cups of coffee do you want to add:");
+        int cups = scanner.nextInt();
+        supplies(water, milk, beans, cups, 0);
     }
 }
