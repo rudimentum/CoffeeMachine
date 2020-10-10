@@ -21,7 +21,7 @@ stages:
   is_completed: true
 - id: 180
   step: 5334
-  is_completed: false
+  is_completed: true
 topics:
   0:
   - title: Introduction to Java
@@ -74,7 +74,7 @@ topics:
   - title: Units of information
     theory_id: 6865
   - title: IDE
-    theory_id: 3805
+    theory_id: 10996
   - title: Sizes and ranges
     theory_id: 3532
   - title: Type casting
