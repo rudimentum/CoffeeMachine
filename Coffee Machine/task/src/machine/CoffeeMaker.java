@@ -1,5 +1,6 @@
 package machine;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CoffeeMaker {
@@ -30,7 +31,7 @@ public class CoffeeMaker {
     public static void buyCoffee() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:");
-        Coffee coffee = null;
+        Coffee coffee;
         switch (scanner.next()) {
             case "1":
                 coffee = Coffee.ESPRESSO;
@@ -42,6 +43,9 @@ public class CoffeeMaker {
                 coffee = Coffee.CAPPUCCINO;
                 break;
             case "back":
+                return;
+            default:
+                System.out.println("Invalid input! Use integers!");
                 return;
         }
 
@@ -67,15 +71,18 @@ public class CoffeeMaker {
 
     public static void fillSupplies() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Write how many ml of water do you want to add:");
-        int water = scanner.nextInt();
-        System.out.println("Write how many ml of milk do you want to add:");
-        int milk = scanner.nextInt();
-        System.out.println("Write how many grams of coffee beans do you want to add:");
-        int beans = scanner.nextInt();
-        System.out.println("Write how many disposable cups of coffee do you want to add:");
-        int cups = scanner.nextInt();
-        changeSupplies(water, milk, beans, cups, 0);
+        try {
+            System.out.println("Write how many ml of water do you want to add:");
+            int water = scanner.nextInt();
+            System.out.println("Write how many ml of milk do you want to add:");
+            int milk = scanner.nextInt();
+            System.out.println("Write how many grams of coffee beans do you want to add:");
+            int beans = scanner.nextInt();
+            System.out.println("Write how many disposable cups of coffee do you want to add:");
+            int cups = scanner.nextInt();
+            changeSupplies(water, milk, beans, cups, 0);
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input! Use integers!");
+        }
     }
-
 }
